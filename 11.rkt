@@ -6,7 +6,7 @@
 (define (average x y)
   (/ (+ x y) 2))
 
-(define (sqrt-v3 x)
+(define (sqrt x)
   (define (good-enough? guess)
     (< (abs (- (square guess) x)) 0.001))
   (define (improve guess)
@@ -17,4 +17,4 @@
         (sqrt-iter (improve guess))))
   (sqrt-iter 1.0))
 
-(sqrt-v3 9)
+(sqrt 9)
