@@ -1,7 +1,5 @@
 #lang sicp
 
-; Continued Pairs
-
 ; Closure Property - ability to continiously combine elements and combinations into greater combinations
 
 (define test-sequence (cons 1 (cons 2 (cons 3 (cons 4 -1)))))
