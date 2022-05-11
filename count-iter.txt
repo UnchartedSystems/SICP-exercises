@@ -13,7 +13,6 @@ Coins: 1,5,10
 
 Coins: 1,5,10
 
-Expansion of 1/((1-x)^2*(1-x^2))
 
 Coins: 1,5,10,15
 2 4 7 11 16 23 31 41 53 67 83 102 123 147 174 204 237 274 314 358
@@ -34,3 +33,23 @@ Expansion of 1/((1-x)^2*(1-x^2)*(1-x^4))
 1:4 2:3
 1:2 2:4
 1:0 2:5
+
+;; (count-change 5)
+;; (count-change 10)
+;; (count-change 15)
+;; (count-change 20)
+;; (count-change 25)
+;; (count-change 30)
+;; (count-change 35)
+;; (count-change 40)
+;; (count-change 45)
+;; (count-change 50)
+;; (count-change 55)
+;; (count-change 60)
+;; (count-change 65)
+;; (count-change 70)
+;; (count-change 75)
+;; (count-change 80)
+;; (count-change 85)
+;; (count-change 90)
+;; (count-change 95)
