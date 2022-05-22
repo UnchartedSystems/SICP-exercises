@@ -58,3 +58,16 @@
     (iter l)))
 
 (same-parity 2 1 3 5 4 8 9 1 3 0 6 4)
+
+(define (square-list items)
+  (if (null? items)
+      nil
+      (cons (* (car items) (car items)) (square-list (cdr items)))))
+
+(define (square x) (* x x))
+
+(define (square-list-map items)
+  (map square items ))
+
+(square-list (list 2 5 0 8 7))
+(square-list-map (list 2 5 0 8 7))
