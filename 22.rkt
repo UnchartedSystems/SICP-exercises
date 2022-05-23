@@ -65,9 +65,21 @@
       (cons (* (car items) (car items)) (square-list (cdr items)))))
 
 (define (square x) (* x x))
-
 (define (square-list-map items)
   (map square items ))
 
 (square-list (list 2 5 0 8 7))
 (square-list-map (list 2 5 0 8 7))
+
+(define (square-list-bad items)
+  (define (iter things answer)
+    (if (null? things)
+        answer
+        ;; iterative cons order means cons order is inverse with list order
+        (iter (cdr things)
+              (cons (square (car things))
+                    answer))))
+  (iter items nil))
+
+
+(square-list-bad (list 2 5 0 8 7))
