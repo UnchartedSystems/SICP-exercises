@@ -75,11 +75,37 @@
   (define (iter things answer)
     (if (null? things)
         answer
-        ;; iterative cons order means cons order is inverse with list order
         (iter (cdr things)
+              ;; iterative cons order means cons order is inverse with list order
               (cons (square (car things))
                     answer))))
   (iter items nil))
 
 
 (square-list-bad (list 2 5 0 8 7))
+
+(define (square-list-bad2 items)
+  (define (iter things answer)
+    (if (null? things)
+        answer
+        (iter (cdr things)
+              ;cons prepends x to listable, here list is being prepended to item
+              (cons answer
+                    (square
+                     (car things))))))
+  (iter items nil))
+
+(square-list-bad2 (list 2 5 0 8 7))
+
+
+(define (for-each f items)
+  (define (do items)
+    (f (car items))
+    (iter (cdr items)))
+  (define (iter items)
+    (if (null? items)
+        true
+        (do items)))
+  (iter items))
+
+(for-each display (list 2 5 0 8 7))
