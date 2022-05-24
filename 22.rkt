@@ -109,3 +109,34 @@
   (iter items))
 
 (for-each display (list 2 5 0 8 7))
+
+(define (count-leaves x)
+  (cond ((null? x) 0)
+        ((not (pair? x)) 1)
+        (else (+ (count-leaves (car x))
+                 (count-leaves (cdr x))))))
+
+(length (cons (list 1 2 3) (list 4 5 6)))
+(count-leaves (cons (list 1 2 3) (list 4 5 6)))
+
+(append (list 1 2 3) (list 4 5 6))
+(cons (list 1 2 3) (list 4 5 6))
+(list (list 1 2 3) (list 4 5 6))
+
+(define (shallow-reverse l)
+  (if (null? l)
+       l
+      (append (shallow-reverse (cdr l)) (list (car l)))))
+
+(define (deep-reverse l)
+  (if (null? l)
+      l
+      (if (list? (car l))
+          (append (deep-reverse (cdr l)) (list (deep-reverse (car l))))
+          (append (deep-reverse (cdr l)) (list (car l))))))
+
+(define nest-l (list 1 (list 2 (list 3 4) 5) 6 (list 7)))
+nest-l
+(shallow-reverse nest-l)
+(shallow-reverse (list 1 2 3 4 5))
+(deep-reverse nest-l)
