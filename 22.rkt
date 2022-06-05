@@ -140,3 +140,13 @@ nest-l
 (shallow-reverse nest-l)
 (shallow-reverse (list 1 2 3 4 5))
 (deep-reverse nest-l)
+
+(define (fringe t)
+  (if (null? t)
+      t
+      (if (list? (car t))
+          (append (fringe (car t)) (fringe (cdr t)))
+          (cons (car t) (fringe (cdr t))))))
+
+(fringe (list 1 2 3 4 5))
+(fringe nest-l)
