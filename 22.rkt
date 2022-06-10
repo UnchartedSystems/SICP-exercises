@@ -150,3 +150,149 @@ nest-l
 
 (fringe (list 1 2 3 4 5))
 (fringe nest-l)
+
+;; 2.29 - Big Exercise
+
+(define (make-mobile left right)
+  (list left right))
+
+(define (make-branch len structure)
+  (list len structure))
+
+(define test-mobile
+  (make-mobile (make-branch 2 (make-mobile (make-branch 2 (make-mobile (make-branch 1 1)
+                                                                       (make-branch 1 1)))
+                                           (make-branch 1 4)))
+               (make-branch 1 (make-mobile (make-branch 3 3)
+                                           (make-branch 1 9)))))
+
+(define (first l)
+  (car l))
+
+(define (second l)
+  (car (cdr l)))
+
+(define (left-branch mobile)
+  (first mobile))
+
+(define (right-branch mobile)
+  (second mobile))
+
+(define (get-length branch)
+  (first branch))
+
+(define (get-structure branch)
+  (second branch))
+
+(define (mobile-or-branch? t)
+  (pair? (first t)))
+
+(define (weigh-branch branch)
+  (if (not (pair? (second branch)))
+      (second branch)
+      (total-weight? (second branch))))
+
+(define (total-weight? mobile)
+  (+ (weigh-branch (left-branch mobile))
+     (weigh-branch (right-branch mobile))))
+
+(total-weight? test-mobile)
+
+(define (branch-balance? branch)
+  (* (get-length branch)
+     (if (not (pair? (get-structure branch)))
+         (get-structure branch)
+         (total-weight? (get-structure branch)))))
+
+(define (is-balanced? mobile)
+  (= (branch-balance? (left-branch mobile))
+     (branch-balance? (right-branch mobile))))
+
+(define (has-mobile? branch)
+  (pair? (get-structure branch)))
+
+; this is a stupid, quick, and dirty solution. Will eliminate much redundant compute when I have more time!
+(define (total-balanced? mobile)
+  (and (is-balanced? mobile)
+       (if (has-mobile? (left-branch mobile))
+           (total-balanced? (get-structure (left-branch mobile)))
+           true)
+       (if (has-mobile? (right-branch mobile))
+           (total-balanced? (get-structure (right-branch mobile)))
+           true)))
+
+(total-balanced? test-mobile)
+
+
+(define (cons-mobile left right)
+  (cons left right))
+
+(define (cons-branch len structure)
+  (cons len structure))
+
+
+(define test-cons-mobile
+  (cons-mobile (cons-branch 2 (cons-mobile (cons-branch 2 (cons-mobile (cons-branch 1 1)
+                                                                       (cons-branch 1 1)))
+                                           (cons-branch 1 4)))
+               (cons-branch 1 (cons-mobile (cons-branch 3 3)
+                                           (cons-branch 1 9)))))
+test-mobile
+test-cons-mobile
+
+(define (firs l)
+  (car l))
+
+(define (secons l)
+  (cdr l))
+
+(define (cleft-branch mobile)
+  (firs mobile))
+
+(define (cright-branch mobile)
+  (secons mobile))
+
+(define (cget-length branch)
+  (firs branch))
+
+(define (cget-structure branch)
+  (secons branch))
+
+(define (cmobile-or-branch? t)
+  (pair? (firs t)))
+
+(define (cweigh-branch branch)
+  (if (not (pair? (secons branch)))
+      (secons branch)
+      (ctotal-weight? (secons branch))))
+
+(define (ctotal-weight? mobile)
+  (+ (cweigh-branch (cleft-branch mobile))
+     (cweigh-branch (cright-branch mobile))))
+
+(ctotal-weight? test-cons-mobile)
+
+(define (cbranch-balance? branch)
+  (* (cget-length branch)
+     (if (not (pair? (cget-structure branch)))
+         (cget-structure branch)
+         (ctotal-weight? (cget-structure branch)))))
+
+(define (cis-balanced? mobile)
+  (= (cbranch-balance? (cleft-branch mobile))
+     (cbranch-balance? (cright-branch mobile))))
+
+(define (chas-mobile? branch)
+  (pair? (cget-structure branch)))
+
+; this is a stupid, quick, and dirty solution. Will eliminate much redundant compute when I have more time!
+(define (ctotal-balanced? mobile)
+  (and (cis-balanced? mobile)
+       (if (chas-mobile? (cleft-branch mobile))
+           (ctotal-balanced? (cget-structure (cleft-branch mobile)))
+           true)
+       (if (chas-mobile? (cright-branch mobile))
+           (ctotal-balanced? (cget-structure (cright-branch mobile)))
+           true)))
+
+(ctotal-balanced? test-cons-mobile)
