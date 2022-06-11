@@ -35,7 +35,7 @@
 (define (square-tree-map tree)
   (map (lambda (sub-tree)
          (if (pair? sub-tree)
-             (square-tree sub-tree)
+             (square-tree-map sub-tree)
              (* sub-tree sub-tree)))
        tree))
 
@@ -44,3 +44,17 @@
 (square-tree-map ex-tree)
 
 ;; 2.31
+
+(define (square x) (* x x))
+
+(define (tree-map f t)
+  (map (lambda (sub-tree)
+         (if (pair? sub-tree)
+             (tree-map f sub-tree)
+             (f sub-tree)))
+       t))
+
+(define (higher-order-square-tree tree)
+  (tree-map square tree))
+
+(tree-map inc ex-tree)
