@@ -58,3 +58,9 @@
   (tree-map square tree))
 
 (tree-map inc ex-tree)
+
+(define (subsets s)
+  (if (null? s)
+      (list nil)
+      (let ((rest (subsets (cdr s))))
+        (append rest "REPLACE THIS STRING!" rest))))
