@@ -59,6 +59,23 @@
 
 (tree-map inc ex-tree)
 
+(define (contains? x l)
+  (cond ((null? l) #f)
+         ((eq? x (car l)) #t)
+         (#t (contains? x (cdr l)))))
+
+(define (set l)
+  (define (iter ol nl)
+    (cond ((null? ol) nl)
+          ((contains? (car ol) nl) (iter (cdr ol) nl))
+          (else (iter (cdr ol) (cons (car ol) nl)))))
+  (reverse (iter l `())))
+
+(set `(1 2 1 4 2 3 7 7 8 4 5))
+(set `(1 2 3 7 8 5))
+
+
+;; Generate all possible subsets of a list of numbers
 (define (subsets s)
   (if (null? s)
       (list nil)
