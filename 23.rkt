@@ -75,9 +75,23 @@
 (set `(1 2 3 7 8 5))
 
 
-;; Generate all possible subsets of a list of numbers
+;Why is there a difference here?? Will investigate
+;ahh, represents an empty list, so (list nil) is `(`())
+(append (list nil) (list nil))
+(append `() `())
+
+
+;; Generate all possible subsets of a set of numbers
 (define (subsets s)
   (if (null? s)
       (list nil)
       (let ((rest (subsets (cdr s))))
-        (append rest "REPLACE THIS STRING!" rest))))
+        (append rest (map (lambda (x) (cons (car s) x)) rest)))))
+
+; How does this interesting piece of code work?
+; It works recursively to fetch an empty list at the base case
+; then as it climbs back down the stack it takes what has been returned recursively
+; doubles it, and adds the first num in the original argument of that function
+; so for any set of n elements the number of subsets of that set is 2ⁿ
+
+(subsets `(1 2 3))
