@@ -95,3 +95,82 @@
 ; so for any set of n elements the number of subsets of that set is 2ⁿ
 
 (subsets `(1 2 3))
+
+(define (filter predicate sequence)
+  (cond ((null? sequence) nil)
+        ((predicate (car sequence))
+         (cons (car sequence)
+               (filter predicate
+                       (cdr sequence))))
+        (else  (filter predicate
+                       (cdr sequence)))))
+
+(define (accumulate f base sequence)
+  (if (null? sequence)
+      base
+      (f (car sequence)
+          (accumulate f
+                      base
+                      (cdr sequence)))))
+
+
+(define (map2 p sequence)
+  (accumulate (lambda (x y) (cons (p x) y))
+              nil sequence))
+
+ (define (append2 seq1 seq2)
+   (accumulate cons seq2 seq1))
+
+(define (length2 sequence)
+  (accumulate (lambda (x y) (inc y)) 0 sequence))
+
+(map2 `(1 2 3))
+(append2 `(1 2 3) `(4 5 6))
+(length2 `(1 2 3 4 5))
+
+(define (enumerate-interval low high)
+  (if (> low high)
+      nil
+      (cons low
+            (enumerate-interval
+             (+ low 1)
+             high))))
+
+(define (enumerate-tree tree)
+  (cond ((null? tree) nil)
+        ((not (pair? tree)) (list tree))
+        (else (append
+               (enumerate-tree (car tree))
+               (enumerate-tree (cdr tree))))))
+
+(define (sum-odd-squares1 tree)
+  (cond ((null? tree) 0)
+        ((not (pair? tree))
+         (if (odd? tree) (square tree) 0))
+        (else (+ (sum-odd-squares1
+                  (car tree))
+                 (sum-odd-squares1
+                  (cdr tree))))))
+
+(define (sum-odd-squares2 tree)
+  (accumulate + 0 (map square (filter odd? (enumerate-tree tree)))))
+
+(define (fib n)
+  (define (fib-iter a b count)
+    (cond ((= count 0) a)
+          (else (fib-iter (+ a b) a (- count 1)))))
+  (fib-iter 1 0 n))
+
+(define (even-fibs1 n)
+  (define (next k)
+    (if (> k n)
+        nil
+        (let ((f (fib k)))
+          (if (even? f)
+              (cons f (next (+ k 1)))
+              (next (+ k 1))))))
+  (next 0))
+
+(define (even-fibs n)
+  (accumulate cons nil (filter even? (map fib (enumerate-interval 0 n)))))
+
