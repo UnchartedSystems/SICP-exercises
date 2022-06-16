@@ -124,7 +124,10 @@
 (define (length2 sequence)
   (accumulate (lambda (x y) (inc y)) 0 sequence))
 
-(map2 `(1 2 3))
+
+
+
+(map2 inc `(1 2 3))
 (append2 `(1 2 3) `(4 5 6))
 (length2 `(1 2 3 4 5))
 
@@ -174,3 +177,11 @@
 (define (even-fibs n)
   (accumulate cons nil (filter even? (map fib (enumerate-interval 0 n)))))
 
+
+(define (horner-eval x coefficient-sequence)
+  (accumulate (lambda (this-coeff higher-terms)
+                 (+ (* higher-terms x) this-coeff))
+              0
+              coefficient-sequence))
+
+(horner-eval 2 (list 1 3 0 5 0 1))
