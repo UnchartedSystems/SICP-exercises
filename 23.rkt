@@ -187,6 +187,11 @@
 (horner-eval 2 (list 1 3 0 5 0 1))
 (+ (* (+ (* (+ (* (+ (* (+ (* (+ (* 0 2) 1) 2) 0) 2) 5) 2) 0) 2) 3) 2) 1)
 
+(define (count-leaves-ex x)
+  (cond ((null? x) 0)
+        ((not (pair? x)) 1)
+        (else (+ (count-leaves-ex (car x))
+                 (count-leaves-ex (cdr x))))))
 
 ;; Without null checking empty lists will be counted, unlike original
 (define (count-leaves t)
@@ -197,11 +202,21 @@
                                            1)))
                        t)))
 
-(define (count-leaves-ex x)
-  (cond ((null? x) 0)
-        ((not (pair? x)) 1)
-        (else (+ (count-leaves-ex (car x))
-                 (count-leaves-ex (cdr x))))))
-
-(count-leaves (cons (list 1 2 3 `()) (list 4 (list 5 6))))
 (count-leaves-ex (cons (list 1 2 3 `()) (list 4 (list 5 6))))
+(count-leaves (cons (list 1 2 3 `()) (list 4 (list 5 6))))
+
+(define (accumulate-ex f base sequence)
+  (if (null? sequence)
+      base
+      (f (car sequence)
+         (accumulate f base (cdr sequence)))))
+
+ (define (accumulate-n f base seqs)
+   (if (null? (car seqs))
+       nil
+       (cons (accumulate f base (map car seqs))
+             (accumulate-n f base (map cdr seqs)))))
+
+(define s (list `(1 2 3) `(4 5 6) `(7 8 9) `(10 11 12)))
+
+(accumulate-n + 0 s)
