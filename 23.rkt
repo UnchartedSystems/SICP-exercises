@@ -180,8 +180,28 @@
 
 (define (horner-eval x coefficient-sequence)
   (accumulate (lambda (this-coeff higher-terms)
-                 (+ (* higher-terms x) this-coeff))
+                 (+ this-coeff (* higher-terms x)))
               0
               coefficient-sequence))
 
 (horner-eval 2 (list 1 3 0 5 0 1))
+(+ (* (+ (* (+ (* (+ (* (+ (* (+ (* 0 2) 1) 2) 0) 2) 5) 2) 0) 2) 3) 2) 1)
+
+
+;; Without null checking empty lists will be counted, unlike original
+(define (count-leaves t)
+  (accumulate + 0 (map (lambda (e) (if (null? e)
+                                       0
+                                       (if (pair? e)
+                                           (count-leaves e)
+                                           1)))
+                       t)))
+
+(define (count-leaves-ex x)
+  (cond ((null? x) 0)
+        ((not (pair? x)) 1)
+        (else (+ (count-leaves-ex (car x))
+                 (count-leaves-ex (cdr x))))))
+
+(count-leaves (cons (list 1 2 3 `()) (list 4 (list 5 6))))
+(count-leaves-ex (cons (list 1 2 3 `()) (list 4 (list 5 6))))
