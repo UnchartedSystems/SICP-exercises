@@ -247,3 +247,38 @@
     (map (lambda (mv) (matrix-*-vector cols mv)) m)))
 
 (matrix-*-matrix m-ex (list `(2 5 7) `(3 6 8) `(4 7 9) `(5 7 10)))
+
+(define (fold-right f base sequence)
+  (if (null? sequence)
+      base
+      (f (car sequence)
+         (fold-right f base (cdr sequence)))))
+
+(define (fold-left f base sequence)
+  (define (iter result rest)
+    (if (null? rest)
+        result
+        (iter (f result (car rest))
+              (cdr rest))))
+  (iter base sequence))
+
+;; Changes not only direction of application but order of function parameters? why?
+
+(fold-right - 0 (list 1 2 1))
+(fold-left  - 0 (list 1 2 1))
+(fold-right list nil (list 1 2 3))
+(fold-left  list nil (list 1 2 3))
+
+
+(define (reverse-r sequence)
+  (fold-right
+   (lambda (x r) (append r (list x))) nil sequence))
+
+(define (reverse-l sequence)
+  (fold-left
+   (lambda (r x) (append (list x) r)) nil sequence))
+
+(reverse-r `(1 2 3))
+(reverse-l `(1 2 3))
+
+;; Next up is Nested Mappings
