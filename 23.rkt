@@ -218,5 +218,32 @@
              (accumulate-n f base (map cdr seqs)))))
 
 (define s (list `(1 2 3) `(4 5 6) `(7 8 9) `(10 11 12)))
-
 (accumulate-n + 0 s)
+
+(define m-ex (list `(1 2 3 4) `(4 5 6 6) `(6 7 8 9)))
+
+(accumulate-n (lambda (x y) (cons (inc x) y)) `() m-ex)
+
+(define (dot-product v w)
+  (accumulate + 0 (map * v w)))
+
+(dot-product (car m-ex) (car (cdr m-ex)))
+
+;; When multiplying a matrix by a vector,
+;; each row of the matrix is multiplied by the vector
+;; (using the dot product procedure described above).
+(define (matrix-*-vector m v)
+  (map (lambda (w) (dot-product v w)) m))
+
+(matrix-*-vector m-ex `(1 2 3 4))
+
+(define (transpose mat)
+  (accumulate-n cons `() mat))
+
+(transpose m-ex)
+
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map (lambda (mv) (matrix-*-vector cols mv)) m)))
+
+(matrix-*-matrix m-ex (list `(2 5 7) `(3 6 8) `(4 7 9) `(5 7 10)))
