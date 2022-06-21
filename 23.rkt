@@ -282,25 +282,27 @@
 (reverse-l `(1 2 3))
 
 ;; Next up is Nested Mappings
-
-(accumulate append
-            nil
-            (map (lambda (i)
-                   (map (lambda (j)
-                          (list i j))
-                        (enumerate-interval 1 (- i 1))))
-                 (enumerate-interval 1 "n")))
-
 (define (flatmap proc seq)
   (accumulate append nil (map proc seq)))
 
+(define (prime? x)
+  (define (iter seq)
+    (if (null? seq)
+        true
+        (if (= 0 (modulo x (car seq)))
+            false
+            (iter (cdr seq)))))
+  (iter (enumerate-interval 2 (/ x 2))))
+
 (define (prime-sum? pair)
   (prime? (+ (car pair) (cadr pair))))
+
 
 (define (make-pair-sum pair)
   (list (car pair)
         (cadr pair)
         (+ (car pair) (cadr pair))))
+
 
 (define (prime-sum-pairs n)
   (map make-pair-sum
@@ -315,6 +317,7 @@
                  (- i 1))))
          (enumerate-interval 1 n)))))
 
+
 (define (permutations s)
   (if (null? s)   ; empty set?
       (list nil)  ; sequence containing empty set
@@ -326,7 +329,7 @@
                s)))
 
 
-
 (define (remove item sequence)
   (filter (lambda (x) (not (= x item)))
           sequence))
+
