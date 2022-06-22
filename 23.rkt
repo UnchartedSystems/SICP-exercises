@@ -333,3 +333,17 @@
   (filter (lambda (x) (not (= x item)))
           sequence))
 
+(define (unique-pairs n)
+  (if (< n 2)
+      nil
+      (filter (lambda (s) (= 2 (length s))) (subsets (reverse (enumerate-interval 1 n))))))
+
+(unique-pairs 5)
+
+(define (prime-sum-pairs-simp n)
+  (map make-pair-sum
+       (filter prime-sum?
+               (unique-pairs n))))
+
+(prime-sum-pairs 9)
+(prime-sum-pairs-simp 9)
