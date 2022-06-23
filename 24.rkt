@@ -89,12 +89,28 @@
       nil
       (filter (lambda (s) (= 2 (length s))) (subsets (reverse (enumerate-interval 1 n))))))
 
+(define (unique-seqs size n)
+  (filter (lambda (s) (= size (length s)))
+          (subsets (reverse (enumerate-interval 1 n)))))
+
 (unique-pairs 5)
 
 (define (prime-sum-pairs-simp n)
   (map make-pair-sum
        (filter prime-sum?
-               (unique-pairs n))))
+               (unique-seqs 2 n))))
 
 (prime-sum-pairs 9)
 (prime-sum-pairs-simp 9)
+
+(define (ordered-summing-triplets s n)
+  (filter (lambda (seq) (= s (accumulate + 0 seq)))
+          (map reverse (unique-seqs 3 n))))
+
+(ordered-summing-triplets 10 10)
+
+(define (ordered-sums seq-size n)
+  (filter (lambda (seq) (= n (accumulate + 0 seq)))
+          (map reverse (unique-seqs seq-size n))))
+
+(ordered-sums 5 20)
